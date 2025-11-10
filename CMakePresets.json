@@ -1,0 +1,66 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "beattie-cpu",
+      "description": "Build for Apple M3 with Homebrew LLVM and OpenMP and MPI",
+      "generator": "Unix Makefiles",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+        "Kokkos_ARCH_ARMV81": "ON",
+        "Athena_ENABLE_MPI": "ON",
+        "CMAKE_CXX_FLAGS": "-fopenmp -I/opt/homebrew/include",
+        "CMAKE_EXE_LINKER_FLAGS": "-L/opt/homebrew/lib -lomp -Wl,-rpath,/opt/homebrew/lib",
+        "Kokkos_ENABLE_OPENMP": "ON"
+        "_comment": "obviously the exact paths will change for your own local, but this shows what flags to use",
+      }
+    },
+    {
+      "name": "bee-gpu",
+      "displayName": "BEE GPU build (generic)",
+      "description": "GPU build on BEE with Volta70 and nvcc_wrapper",
+      "generator": "Unix Makefiles",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "/home/jbeattie/athenak/kokkos/bin/nvcc_wrapper",
+        "Kokkos_ENABLE_CUDA": "ON",
+        "Kokkos_ARCH_VOLTA70": "ON"
+      }
+    },
+    {
+      "name": "trill-cpu",
+      "displayName": "Trillium MPI CPU build (generic)",
+      "description": "CPU build on Trillium CPU and nvcc_wrapper",
+      "generator": "Unix Makefiles",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "mpicc",
+        "CMAKE_CXX_COMPILER": "mpicxx",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "Athena_ENABLE_MPI": "ON"
+        "_comment": "modules that should be loaded: module load gcc cmake openmpi fftw (only need fftw if you use Beattie's fork)",
+      }
+    },
+    {
+      "name": "trill-gpu",
+      "displayName": "Trillium MPI GPU build (generic)",
+      "description": "GPU build on Trillium with ARCH HOPPER90 and nvcc_wrapper",
+      "generator": "Unix Makefiles",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "/home/jbeattie/athenak/kokkos/bin/nvcc_wrapper",
+        "Kokkos_ENABLE_CUDA": "ON",
+        "Kokkos_ARCH_HOPPER90": "ON",
+        "Athena_ENABLE_MPI": "ON"
+        "_comment": "modules that should be loaded: module load gcc cmake cuda openmpi",
+      }
+    }
+  ]
+}
